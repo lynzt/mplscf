@@ -1,0 +1,5 @@
+psycopg2==2.6.1
+beautifulsoup4==4.6.0
+requests==2.2.1
+git+git://github.com/lynzt/python_people_names.git
+git+git://github.com/lynzt/python_utils.git
