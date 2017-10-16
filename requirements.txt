@@ -8,3 +8,4 @@ pytesseract==0.1.7
 pillow==4.3.0
 git+git://github.com/lynzt/python_people_names.git
 git+git://github.com/lynzt/python_utils.git
+git+git://github.com/lynzt/python_file_utils.git

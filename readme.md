@@ -17,11 +17,3 @@ docker exec -it postgres-mplscf /bin/sh
 
 login db...
 psql -U postgres
-
-create user/pass
-create user mplscf_web password 'mplscf_123';
-
-grant select, insert, update, delete on all tables in schema public to mplscf_web;
-grant all on all sequences in schema public to mplscf_web;
-
-CREATE DATABASE mplscf ENCODING 'utf8' TEMPLATE template0;

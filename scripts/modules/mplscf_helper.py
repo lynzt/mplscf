@@ -28,3 +28,7 @@ def remove_new_from_name(str):
 
 def convert_money_to_decimal(money):
     return Decimal(re.sub(r'[^\d\-.]', '', money))
+
+
+def replace_space_with_underscore(str):
+    return "_".join(str.split())

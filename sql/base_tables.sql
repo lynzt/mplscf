@@ -1,5 +1,10 @@
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mncf_web;
-grant all on all sequences in schema public to mncf_web;
+create user/pass
+create user mplscf_web password 'mplscf_123';
+
+CREATE DATABASE mplscf ENCODING 'utf8' TEMPLATE template0;
+
+grant select, insert, update, delete on all tables in schema public to mplscf_web;
+grant all on all sequences in schema public to mplscf_web;
 
 #  ########    ###    ########  ##       ########  ######
 #     ##      ## ##   ##     ## ##       ##       ##    ##
@@ -59,19 +64,19 @@ CREATE INDEX candidates_office_idx ON candidates (office);
 -- CREATE INDEX candidate_details_party_idx ON candidate_details (party);
 -- CREATE INDEX candidate_details_office_idx ON candidate_details (office);
 
-DROP TABLE IF EXISTS political_party_units;
-CREATE TABLE IF NOT EXISTS political_party_units (
+DROP TABLE IF EXISTS documents;
+CREATE TABLE IF NOT EXISTS documents (
     id serial,
-    registration_id integer,
+    candidate_id integer,
     name character varying,
-    slug_name character varying,
-    party character varying,
+    href character varying,
+    file_path character varying,
     created_at timestamp,
     updated_at timestamp,
-    CONSTRAINT political_party_units_pkey PRIMARY KEY (id)
+    CONSTRAINT documents_pkey PRIMARY KEY (id)
 );
-CREATE INDEX political_party_units_name_idx ON political_party_units (name);
-CREATE INDEX political_party_units_slug_idx ON political_party_units (slug_name);
+CREATE INDEX documents_candidate_id_idx ON documents (candidate_id);
+CREATE INDEX documents_name_idx ON documents (name);
 
 DROP TABLE IF EXISTS political_committees;
 CREATE TABLE IF NOT EXISTS political_committees (

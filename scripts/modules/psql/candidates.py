@@ -15,6 +15,18 @@ def get_candidate_by_rid(params):
         where cfrs_id = %s'''
     return db.run_query(sql_stmt, sql_params, 'one')
 
+def get_candidates_by_location(params):
+    sql_params = [params['location']]
+    sql_stmt = '''select *
+        from candidates
+        where location ilike %s'''
+    for key, value in params.items():
+        if key == 'location':
+            continue
+        sql_stmt += ' and ' + key + ' ilike %s '
+        sql_params.append(value)
+    return db.run_query(sql_stmt, sql_params, 'many')
+
 def upsert_candidates(params):
     upsert_params = get_upsert_params(params)
     result = db.upsert_record(get_candidate_by_rid, params, 'candidates', upsert_params, 'cfrs_id')
