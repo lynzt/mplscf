@@ -1,6 +1,7 @@
 import csv
 import io
 import re
+from decimal import Decimal
 
 class MyDialect(csv.Dialect):
     strict = True
@@ -24,3 +25,6 @@ def split_candidate_name_party(str):
 
 def remove_new_from_name(str):
     return re.sub('-new$','', str)
+
+def convert_money_to_decimal(money):
+    return Decimal(re.sub(r'[^\d\-.]', '', money))

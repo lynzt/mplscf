@@ -12,33 +12,34 @@ grant all on all sequences in schema public to mncf_web;
 DROP TABLE IF EXISTS candidates;
 CREATE TABLE IF NOT EXISTS candidates (
     id serial,
-    registration_id integer,
+    cfrs_id integer,
     first_name character varying,
     middle_name character varying,
     last_name character varying,
     slug_name character varying,
     committee_name character varying,
     committee_slug_name character varying,
-    party character varying,
-    sitting boolean,
+    registration_date timestamp,
+    termination_date timestamp,
+    location character varying,
     office character varying,
     district character varying,
-    terms integer,
-    last_pulled_at timestamp,
+    ytd_revenues decimal(12,2),
+    ytd_expenses decimal(12,2),
+    cash_balance decimal(12,2),
     created_at timestamp,
     updated_at timestamp,
     CONSTRAINT candidates_pkey PRIMARY KEY (id)
 );
--- ALTER TABLE candidates ADD COLUMN last_pulled_at timestamp;
-
+CREATE INDEX candidates_cfrs_idx ON candidates (cfrs_id);
 CREATE INDEX candidates_name_idx ON candidates (last_name, first_name, middle_name);
 CREATE INDEX candidates_slug_idx ON candidates (slug_name);
 
 CREATE INDEX candidates_committee_name_idx ON candidates (committee_name);
 CREATE INDEX candidates_committee_slug_name_idx ON candidates (committee_slug_name);
 
+CREATE INDEX candidates_location_idx ON candidates (location);
 CREATE INDEX candidates_district_idx ON candidates (district);
-CREATE INDEX candidates_party_idx ON candidates (party);
 CREATE INDEX candidates_office_idx ON candidates (office);
 
 -- DROP TABLE IF EXISTS candidate_details;

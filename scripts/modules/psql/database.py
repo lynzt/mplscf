@@ -77,6 +77,8 @@ class Database:
         sql_stmt = str.rstrip(sql_stmt, ', ')
         sql_placeholders = str.rstrip(sql_placeholders, ', ')
         sql_stmt += ') values ('+ sql_placeholders +') returning *'
+
+        print ("sql_stmt: %s" % sql_stmt)
         return self.run_query(sql_stmt, sql_params, 'one')
 
     def update_table_row(self, table_name, key_id, table_details):
