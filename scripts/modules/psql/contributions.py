@@ -2,13 +2,12 @@ from modules.psql.database import Database
 db = Database()
 
 def get_contributions_by_id(params):
-    sql_params = [params['source_id'], params['source_type'], params['target_id'], params['date'], params['amount']]
+    sql_params = [params['date'], params['source_id'], params['target_id'], params['amount']]
     sql_stmt = '''select *
         from contributions
-        where source_id = %s
-        and source_type = %s
+        where date = %s
+        and source_id = %s
         and target_id = %s
-        and date = %s
         and amount = %s
         '''
     return db.run_query(sql_stmt, sql_params, 'one')
@@ -19,5 +18,5 @@ def upsert_contributions(params):
     return result
 
 def get_upsert_params(params):
-    keys = ['source_id', 'source_type', 'target_id', 'date', 'in_kind', 'in_kind_description', 'amount']
+    keys = ['source_id', 'target_id', 'date', 'in_kind', 'in_kind_description', 'amount']
     return db.get_parms(params, keys)

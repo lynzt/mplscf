@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS candidates (
     ytd_revenues decimal(12,2),
     ytd_expenses decimal(12,2),
     cash_balance decimal(12,2),
-    created_at timestamp,
+    created_at timestamp default now(),
     updated_at timestamp,
     CONSTRAINT candidates_pkey PRIMARY KEY (id)
 );
@@ -78,25 +78,24 @@ CREATE TABLE IF NOT EXISTS documents (
 CREATE INDEX documents_candidate_id_idx ON documents (candidate_id);
 CREATE INDEX documents_name_idx ON documents (name);
 
-DROP TABLE IF EXISTS political_committees;
-CREATE TABLE IF NOT EXISTS political_committees (
-    id serial,
-    registration_id integer,
-    name character varying,
-    slug_name character varying,
-    party character varying,
-    created_at timestamp,
-    updated_at timestamp,
-    CONSTRAINT political_committees_pkey PRIMARY KEY (id)
-);
-CREATE INDEX political_committees_name_idx ON political_committees (name);
-CREATE INDEX political_committees_slug_idx ON political_committees (slug_name);
+-- DROP TABLE IF EXISTS political_committees;
+-- CREATE TABLE IF NOT EXISTS political_committees (
+--     id serial,
+--     registration_id integer,
+--     name character varying,
+--     slug_name character varying,
+--     party character varying,
+--     created_at timestamp,
+--     updated_at timestamp,
+--     CONSTRAINT political_committees_pkey PRIMARY KEY (id)
+-- );
+-- CREATE INDEX political_committees_name_idx ON political_committees (name);
+-- CREATE INDEX political_committees_slug_idx ON political_committees (slug_name);
 
 
-DROP TABLE IF EXISTS individuals;
+-- DROP TABLE IF EXISTS individuals;
 CREATE TABLE IF NOT EXISTS individuals (
     id serial,
-    is_lobbyist boolean default false,
     first_name character varying,
     middle_name character varying,
     last_name character varying,
@@ -113,19 +112,20 @@ CREATE TABLE IF NOT EXISTS individuals (
 );
 CREATE INDEX individuals_name_idx ON individuals (last_name, first_name, middle_name);
 CREATE INDEX individuals_slug_idx ON individuals (slug_name);
+CREATE INDEX individuals_city_idx ON individuals (city);
+CREATE INDEX individuals_state_idx ON individuals (state);
 
 
-DROP TABLE IF EXISTS contributions;
+-- DROP TABLE IF EXISTS contributions;
 CREATE TABLE IF NOT EXISTS contributions (
     id serial,
-    source_id integer,
-    source_type character varying,
-    target_id integer,
     date date,
+    source_id integer,
+    target_id integer,
     in_kind character varying,
     in_kind_description character varying,
     amount decimal(12,2),
-    created_at timestamp,
+    created_at timestamp default now,
     updated_at timestamp,
     CONSTRAINT individual_contributions_pkey PRIMARY KEY (id)
 );

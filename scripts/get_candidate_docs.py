@@ -44,8 +44,9 @@ def determine_filename(name):
 
 def determine_dir_path(candidate):
     print (candidate['slug_name'])
-    candidate_name = '%s_%s_%s' % (candidate['last_name'], candidate['first_name'], candidate['cfrs_id'])
-    return pdf_dif + candidate_name.lower()
+    candidate_name = '%s %s %s' % (candidate['last_name'], candidate['first_name'], candidate['cfrs_id'])
+    candidate_name = mplscf_helper.replace_space_with_underscore(candidate_name).lower()
+    return pdf_dif + candidate_name
 
 def get_candidate_doc(href, dir_path, filename):
     filename_with_path = '%s/%s.pdf' % (dir_path, filename)
@@ -77,15 +78,16 @@ def get_candidate_ids(params, candidates_filter=[]):
         return candidates
 
 def main(args):
-    candidates = get_candidate_ids({'location': 'minneapolis', 'office': 'mayor'})
-    # candidates = get_candidate_ids({'location': 'minneapolis'}, [746, 935])
+    # candidates = get_candidate_ids({'location': 'minneapolis', 'office': 'council member', 'district': '9'})
+    # candidates = get_candidate_ids({'location': 'minneapolis'}, [903])
+    candidates = get_candidate_ids({'location': 'minneapolis'})
 
     for candidate in candidates:
         url = 'http://www16.co.hennepin.mn.us/cfrs/getreports.do'
         r = requests.post(url, data = {'ids': candidate['cfrs_id']})
         html = r.text
         # scrape_candidate_docs(candidate, html)
-        scrape_candidate_docs(candidate, html, True)
+        scrape_candidate_docs(candidate, html, False)
 
 if __name__ == '__main__':
     main(sys.argv)

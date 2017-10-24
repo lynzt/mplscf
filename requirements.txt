@@ -1,11 +1,7 @@
-Wand==0.4.4
-pyocr==0.4.7
 psycopg2==2.6.1
 beautifulsoup4==4.6.0
 requests==2.2.1
-PyPDF2==1.26
-pytesseract==0.1.7
-pillow==4.3.0
 git+git://github.com/lynzt/python_people_names.git
 git+git://github.com/lynzt/python_utils.git
 git+git://github.com/lynzt/python_file_utils.git
+git+git://github.com/lynzt/python_gsheets_readonly.git
