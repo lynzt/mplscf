@@ -34,8 +34,15 @@ def remove_new_from_name(str):
     return re.sub('-new$','', str)
 
 def convert_money_to_decimal(money):
+    if isinstance(money, float):
+        return money
     return Decimal(re.sub(r'[^\d\-.]', '', money))
 
+def convert_dec_to_string(dec):
+    if dec == '':
+        return dec
+    dec = convert_money_to_decimal(dec)
+    return '%.2f' % dec
 
 def replace_space_with_underscore(str):
     return "_".join(str.split())

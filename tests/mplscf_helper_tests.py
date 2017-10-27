@@ -11,6 +11,7 @@ class MplscfHelperTests(unittest.TestCase):
         self.assertEqual(mplscf_helper.convert_money_to_decimal('$100'), Decimal('100'))
         self.assertEqual(mplscf_helper.convert_money_to_decimal('$100,000'), Decimal('100000'))
         self.assertEqual(mplscf_helper.convert_money_to_decimal('$1,422.86'), Decimal('1422.86'))
+        self.assertEqual(mplscf_helper.convert_money_to_decimal('1000'), Decimal('1000'))
 
     def test_expand_date(self):
         self.assertEqual(mplscf_helper.convert_mmddyy_to_yyyymmdd('7/25/17', '/'), '2017-07-25')

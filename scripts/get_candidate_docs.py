@@ -18,11 +18,10 @@ get candidate documents
     store download details in downloads table
 '''
 
-def scrape_candidate_docs(candidate, html, download_pdf = False):
+def scrape_candidate_docs(candidate, html, download_pdf = False, redownload = False):
     soup = BeautifulSoup(html, "html.parser")
     doc_links = get_reports_links(soup)
     dir_path = determine_dir_path(candidate)
-    file_utils.touch_directory(dir_path)
     file_utils.touch_directory(dir_path)
 
     for link in doc_links:
@@ -31,8 +30,11 @@ def scrape_candidate_docs(candidate, html, download_pdf = False):
         if name == 'adobe_acrobat®_reader': # skip link for adobe reader
             continue
         print ("\tdocument: %s" % (name))
+
         if download_pdf:
-            get_candidate_doc(href, dir_path, name)
+            filename_with_path = '%s/%s.pdf' % (dir_path, name)
+            if not file_utils.check_file_or_folder_exists(filename_with_path) or redownload:
+                get_candidate_doc(href, filename_with_path)
         document = build_document(candidate['id'], name, href, dir_path)
         documents_model.touch_documents(document);
 
@@ -48,8 +50,7 @@ def determine_dir_path(candidate):
     candidate_name = mplscf_helper.replace_space_with_underscore(candidate_name).lower()
     return pdf_dif + candidate_name
 
-def get_candidate_doc(href, dir_path, filename):
-    filename_with_path = '%s/%s.pdf' % (dir_path, filename)
+def get_candidate_doc(href, filename_with_path):
     url = 'http://www16.co.hennepin.mn.us/cfrs/%s' % (href)
     urllib.request.urlretrieve(url, filename_with_path)
 
@@ -78,16 +79,16 @@ def get_candidate_ids(params, candidates_filter=[]):
         return candidates
 
 def main(args):
-    # candidates = get_candidate_ids({'location': 'minneapolis', 'office': 'council member', 'district': '9'})
+    candidates = get_candidate_ids({'location': 'minneapolis', 'office': 'council member', 'district': '1'})
     # candidates = get_candidate_ids({'location': 'minneapolis'}, [903])
-    candidates = get_candidate_ids({'location': 'minneapolis'})
+    # candidates = get_candidate_ids({'location': 'minneapolis'})
 
     for candidate in candidates:
         url = 'http://www16.co.hennepin.mn.us/cfrs/getreports.do'
         r = requests.post(url, data = {'ids': candidate['cfrs_id']})
         html = r.text
         # scrape_candidate_docs(candidate, html)
-        scrape_candidate_docs(candidate, html, False)
+        scrape_candidate_docs(candidate, html, True)
 
 if __name__ == '__main__':
     main(sys.argv)
